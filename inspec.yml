@@ -53,22 +53,17 @@ inputs:
     required: true
 <% end %>
 
-# inputs:
-#   - name: BASELINE
-#     type: String
-#     value: <%= ENV['BASELINE'] %> # Map to baseline value
-# Consider match value instead ==
 
   - name: overlay_controls
     description: 'List of inapplicable controls in ARS based on system categorization'
     type: Array
-    profile: microsoft-sql-server-2017-cis-baseline # required to refer to input inside include_controls
+    profile: microsoft-sql-server-2017-cis-baseline # profile tag required to refer to input inside include_controls
 <% if ENV['BASELINE'] == 'High' %>
     value:
-      - "microsoft-sql-server-2017-cis-2.1"
+      - "microsoft-sql-server-2017-cis-2.1" # Test with empty array and add exception handling in overlay.rb
 <% elsif ENV['BASELINE'] == 'Moderate' %>
     value:
-      - "microsoft-sql-server-2017-cis-2.1"
+      - "microsoft-sql-server-2017-cis-5.3"
 <% elsif ENV['BASELINE'] == 'Low' %>
     value:
       - "microsoft-sql-server-2017-cis-2.1"
@@ -81,9 +76,15 @@ inputs:
       - "microsoft-sql-server-2017-cis-3.7"
       - "microsoft-sql-server-2017-cis-5.3"
       - "microsoft-sql-server-2017-cis-6.1"
-      - "microsoft-sql-server-2017-cis-7.1"
-      - "microsoft-sql-server-2017-cis-7.2"
+      # - "microsoft-sql-server-2017-cis-7.1"
+      # - "microsoft-sql-server-2017-cis-7.2"
       # - "microsoft-sql-server-2017-cis-8.1"
 <% else %>
     required: true
 <% end %>
+
+# inputs:
+#   - name: BASELINE
+#     type: String
+#     value: <%= ENV['BASELINE'] %> # Map to baseline value
+# Consider match value instead ==

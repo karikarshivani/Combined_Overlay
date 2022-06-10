@@ -14,7 +14,18 @@ include_controls "microsoft-sql-server-2017-cis-baseline" do
     end
   end
   
-  # All describe block/other modifications go under separate controls and under the appropriate baseline
+  # All universal changes to any control can just be written as usual
+  control "microsoft-sql-server-2017-cis-7.1" do
+    title "Title modified in ALL Overlays"
+    impact 0.5
+  end
+
+  control "microsoft-sql-server-2017-cis-7.2" do
+    title "Title modified in ALL Overlays"
+    impact 0.5
+  end
+
+  # Any changes that are specific to the baseline and not universal go under here
   case ENV["BASELINE"]
   when "High"
     control "microsoft-sql-server-2017-cis-8.1" do
