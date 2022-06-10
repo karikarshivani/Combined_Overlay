@@ -1,0 +1,89 @@
+name: combined-cms-ars-3.1-microsoft-sql-server-2017-cis-overlay
+title: combined-cms-ars-3.1-microsoft-sql-server-2017-cis-overlay
+maintainer: MITRE SAF
+copyright: MITRE SAF
+copyright_email: saf@groups.mitre.org
+license: Apache-2.0
+summary: "An InSpec Overlay Profile for CMS ARS 3.1 Low to validate the Microsoft SQL Server 2017 CIS Benchmark"
+version: 1.2.0
+inspec_version: ">= 4.0"
+
+depends:
+- name: microsoft-sql-server-2017-cis-baseline
+  url: https://github.com/mitre/microsoft-sql-server-2017-cis-baseline/archive/main.tar.gz
+
+inputs:
+  - name: user
+    description: 'The username MSSQL DB Server'
+    required: true
+    sensitive: true
+
+  - name: password
+    description: 'The password MSSQL DB Server'
+    required: true
+    sensitive: true
+
+  - name: host
+    description: 'The hostname MSSQL DB Server'
+    required: true
+    sensitive: true
+
+  - name: instance
+    description: 'The instance name MSSQL DB Server'
+    required: true
+    sensitive: true
+
+  - name: port
+    description: 'The port used for MSSQL DB Server'
+    type: numeric
+    value: 1433
+    required: true
+    sensitive: true
+
+  - name: approved_sql_version
+    description: 'Approved version expected to be installed'
+    profile: microsoft-sql-server-2017-cis-baseline
+<% if ENV['BASELINE'] == 'High' %>
+    value: 14.0.3420.10
+<% elsif ENV['BASELINE'] == 'Moderate' %>
+    value: 14.0.3420.11
+<% elsif ENV['BASELINE'] == 'Low' %>
+    value: 14.0.3420.12
+<% else %>
+    required: true
+<% end %>
+
+# inputs:
+#   - name: BASELINE
+#     type: String
+#     value: <%= ENV['BASELINE'] %> # Map to baseline value
+# Consider match value instead ==
+
+  - name: overlay_controls
+    description: 'List of inapplicable controls in ARS based on system categorization'
+    type: Array
+    profile: microsoft-sql-server-2017-cis-baseline # required to refer to input inside include_controls
+<% if ENV['BASELINE'] == 'High' %>
+    value:
+      - "microsoft-sql-server-2017-cis-2.1"
+<% elsif ENV['BASELINE'] == 'Moderate' %>
+    value:
+      - "microsoft-sql-server-2017-cis-2.1"
+<% elsif ENV['BASELINE'] == 'Low' %>
+    value:
+      - "microsoft-sql-server-2017-cis-2.1"
+      - "microsoft-sql-server-2017-cis-2.3"
+      - "microsoft-sql-server-2017-cis-2.6"
+      - "microsoft-sql-server-2017-cis-2.7"
+      - "microsoft-sql-server-2017-cis-2.10"
+      - "microsoft-sql-server-2017-cis-3.5"
+      - "microsoft-sql-server-2017-cis-3.6"
+      - "microsoft-sql-server-2017-cis-3.7"
+      - "microsoft-sql-server-2017-cis-5.3"
+      - "microsoft-sql-server-2017-cis-6.1"
+      - "microsoft-sql-server-2017-cis-7.1"
+      - "microsoft-sql-server-2017-cis-7.2"
+      # - "microsoft-sql-server-2017-cis-8.1"
+<% else %>
+    required: true
+<% end %>
